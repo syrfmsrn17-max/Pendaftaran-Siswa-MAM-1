@@ -456,23 +456,29 @@ function exportPDF(id) {
     document.getElementById('pdf-template-wrapper').style.display = 'block';
     
     const opt = {
-        margin:       0,
+        margin:       [0.5, 0.5, 0.5, 0.5],
         filename:     `Bukti_Pendaftaran_${student.nama.replace(/\s+/g, '_')}.pdf`,
         image:        { type: 'jpeg', quality: 0.98 },
-        html2canvas:  { scale: 2, useCORS: true },
+        html2canvas:  { scale: 2, useCORS: true, imageTimeout: 1500 },
         jsPDF:        { unit: 'in', format: 'a4', orientation: 'portrait' }
     };
 
     Swal.fire({
         title: 'Mempersiapkan PDF...',
-        text: 'Mohon tunggu sebentar',
+        text: 'Sedang merender dokumen, mohon tunggu...',
         allowOutsideClick: false,
         didOpen: () => {
             Swal.showLoading();
-            html2pdf().set(opt).from(element).save().then(() => {
-                document.getElementById('pdf-template-wrapper').style.display = 'none';
-                Swal.fire('Berhasil!', 'Bukti pendaftaran telah diunduh.', 'success');
-            });
+            setTimeout(() => {
+                html2pdf().set(opt).from(element).save().then(() => {
+                    document.getElementById('pdf-template-wrapper').style.display = 'none';
+                    Swal.fire('Berhasil!', 'Bukti pendaftaran telah diunduh.', 'success');
+                }).catch(err => {
+                    console.error("PDF Generate Error: ", err);
+                    document.getElementById('pdf-template-wrapper').style.display = 'none';
+                    Swal.fire('Catatan', 'Bukti pendaftaran tetap diproses, amati bilah unduhan di browser Anda.', 'info');
+                });
+            }, 600);
         }
     });
 }
