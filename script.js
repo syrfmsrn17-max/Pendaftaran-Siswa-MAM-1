@@ -178,6 +178,7 @@ function handleFormSubmit(e) {
         jurusan: document.getElementById('jurusanMasuk').value,
         alamat: document.getElementById('alamatSiswa').value,
         foto: document.getElementById('fotoBase64').value || null,
+        statusPembayaran: document.querySelector('input[name="statusPembayaran"]:checked').value,
         tanggalDaftar: new Date().toISOString()
     };
     
@@ -217,8 +218,12 @@ function resetForm() {
     // Reset photo preview
     document.getElementById('imgPreview').style.display = 'none';
     document.getElementById('imgPreview').src = '';
-    document.getElementById('previewIconText').style.display = 'flex';
+    document.getElementById('previewIconText').style.display = 'block';
     
+    // Reset payment radio
+    const paymentRadios = document.querySelectorAll(`input[name="statusPembayaran"]`);
+    if(paymentRadios.length) paymentRadios[0].checked = true;
+
     document.getElementById('form-title').innerText = 'Pendaftaran Siswa Baru';
 }
 
@@ -273,6 +278,11 @@ function renderStudentTable() {
                     <span class="badge badge-primary">${s.kelas} ${s.jurusan}</span>
                 </td>
                 <td>
+                    <span class="badge" style="background:${s.statusPembayaran === 'Lunas' ? 'var(--success)' : 'var(--warning)'}; color:white;">
+                        ${s.statusPembayaran === 'Lunas' ? '<i class="ri-check-line"></i> Lunas' : '<i class="ri-error-warning-line"></i> Belum Lunas'}
+                    </span>
+                </td>
+                <td>
                     <div class="action-btns">
                         <button class="btn btn-outline btn-sm text-blue" onclick="exportPDF('${s.id}')" title="Export PDF Bukti"><i class="ri-printer-line"></i></button>
                         <button class="btn btn-outline btn-sm text-primary" onclick="editStudent('${s.id}')" title="Edit"><i class="ri-edit-line"></i></button>
@@ -311,6 +321,12 @@ function editStudent(id) {
     document.getElementById('jurusanMasuk').value = student.jurusan;
     document.getElementById('alamatSiswa').value = student.alamat;
     
+    // Set payment status radio
+    const statusVal = student.statusPembayaran || 'Belum';
+    document.querySelectorAll(`input[name="statusPembayaran"]`).forEach(r => {
+        r.checked = (r.value === statusVal);
+    });
+    
     // Photo handles
     if(student.foto) {
         document.getElementById('fotoBase64').value = student.foto;
@@ -321,7 +337,7 @@ function editStudent(id) {
         document.getElementById('fotoBase64').value = '';
         document.getElementById('imgPreview').style.display = 'none';
         document.getElementById('imgPreview').src = '';
-        document.getElementById('previewIconText').style.display = 'flex';
+        document.getElementById('previewIconText').style.display = 'block';
     }
     
     document.getElementById('form-title').innerText = 'Edit Data Siswa';
@@ -414,6 +430,7 @@ function exportPDF(id) {
     document.getElementById('pdf-ttl').innerText = `: ${student.tempatLahir}, ${student.tanggalLahir}`;
     document.getElementById('pdf-umur').innerText = `: ${student.umur}`;
     document.getElementById('pdf-jurusan').innerText = `: Kelas ${student.kelas} - ${student.jurusan}`;
+    document.getElementById('pdf-status').innerText = `: ${student.statusPembayaran === 'Lunas' ? 'Lunas' : 'Belum Lunas'}`;
     document.getElementById('pdf-alamat').innerText = `: ${student.alamat}`;
     
     const todayStr = new Date().toLocaleDateString('id-ID', { year: 'numeric', month: 'long', day: 'numeric' });

@@ -21,10 +21,10 @@
     <aside class="sidebar">
         <div class="sidebar-header">
             <div class="logo">
-                <i class="ri-graduation-cap-fill"></i>
-                <h2>MAMSAKA</h2>
+                <img src="logo.png" alt="Logo" style="width: 55px; height: 55px; object-fit: contain; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));">
+                <h2>MA MUHAMMADIYAH 1<br>PACIRAN</h2>
             </div>
-            <button id="close-sidebar" class="md-hidden"><i class="ri-close-line"></i></button>
+            <button id="close-sidebar" class="md-hidden" style="position: absolute; right: 1rem; top: 1rem;"><i class="ri-close-line"></i></button>
         </div>
         <nav class="sidebar-nav">
             <ul id="nav-list">
@@ -384,28 +384,33 @@
                                 <textarea id="alamatSiswa" rows="3" required placeholder="Jalan, RT/RW, Desa, Kecamatan, Kabupaten"></textarea>
                             </div>
 
-                            <div class="form-row align-end">
-                                <div class="form-group">
-                                    <label for="fotoSiswa">Foto Siswa (Maks 1MB)</label>
-                                    <input type="file" id="fotoSiswa" accept="image/*" class="file-input">
-                                    <small id="fotoHelp" class="text-muted">Pilih foto jika ingin mengubah/menambahkan.</small>
-                                </div>
-                                <div class="form-group">
-                                    <div class="photo-preview-box" id="photoPreview">
-                                        <img id="imgPreview" src="" style="display:none; width: 100%; height: 100%; object-fit: cover;">
-                                        <div id="previewIconText">
-                                            <i class="ri-image-add-line"></i>
-                                            <span>Preview Foto</span>
-                                        </div>
+                            <div class="form-group mb-4">
+                                <label>Foto Siswa (Maks 1MB)</label>
+                                <div class="upload-area" id="uploadArea" onclick="document.getElementById('fotoSiswa').click()">
+                                    <input type="file" id="fotoSiswa" accept="image/*" class="file-input d-none">
+                                    <div class="upload-content" id="previewIconText">
+                                        <i class="ri-cloud-upload-line"></i>
+                                        <h4>Klik atau Tarik Foto Kesini</h4>
+                                        <p>Mendukung JPG, PNG (Maks 1MB)</p>
                                     </div>
-                                    <input type="hidden" id="fotoBase64">
+                                    <img id="imgPreview" src="" style="display:none;">
                                 </div>
+                                <input type="hidden" id="fotoBase64">
                             </div>
                             
-                            <div class="form-group">
-                                <div class="fee-box">
-                                    <i class="ri-information-fill text-blue"></i>
-                                    <span>Biaya Pendaftaran: <strong>Rp 150.000</strong></span>
+                            <div class="form-row">
+                                <div class="form-group flex-1" style="flex:1;">
+                                    <div class="fee-box h-100" style="margin-bottom:0; height:100%;">
+                                        <i class="ri-information-fill text-blue"></i>
+                                        <span>Biaya Pendaftaran: <strong>Rp 150.000</strong></span>
+                                    </div>
+                                </div>
+                                <div class="form-group flex-1" style="flex:1;">
+                                    <label>Status Pembayaran Pendaftaran</label>
+                                    <div class="radio-group pt-2">
+                                        <label class="radio"><input type="radio" name="statusPembayaran" value="Belum" checked> <span class="badge" style="background:var(--warning); color:white;">Belum Lunas</span></label>
+                                        <label class="radio"><input type="radio" name="statusPembayaran" value="Lunas"> <span class="badge" style="background:var(--success); color:white;">Beres / Lunas</span></label>
+                                    </div>
                                 </div>
                             </div>
 
@@ -456,6 +461,7 @@
                                     <th>Info Siswa</th>
                                     <th>Kelahiran & Umur</th>
                                     <th>Program</th>
+                                    <th>Status Pembayaran</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -515,7 +521,7 @@
                 <div class="card max-w-2xl mx-auto text-center about-card">
                     <div class="card-body py-5">
                         <div class="about-logo mb-4">
-                            <i class="ri-graduation-cap-fill text-primary" style="font-size: 4rem;"></i>
+                            <img src="logo.png" alt="Logo MAMSAKA" style="width: 100px; height: 100px; object-fit: contain; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));">
                         </div>
                         <h2 class="mb-2">Website PPDB MAM 1 Paciran</h2>
                         <span class="badge badge-primary mb-4">Tapel 2026/2027</span>
@@ -577,6 +583,7 @@
                         <tr><td style="padding: 8px 0; color: #64748b;">Tempat, Tgl Lahir</td><td style="padding: 8px 0;" id="pdf-ttl">: -</td></tr>
                         <tr><td style="padding: 8px 0; color: #64748b;">Umur</td><td style="padding: 8px 0;" id="pdf-umur">: -</td></tr>
                         <tr><td style="padding: 8px 0; color: #64748b;">Kelas & Jurusan</td><td style="padding: 8px 0; font-weight: 600;" id="pdf-jurusan">: -</td></tr>
+                        <tr><td style="padding: 8px 0; color: #64748b;">Status Pembayaran</td><td style="padding: 8px 0; font-weight: 600; color: #0284c7;" id="pdf-status">: -</td></tr>
                         <tr><td style="padding: 8px 0; color: #64748b;">Alamat</td><td style="padding: 8px 0;" id="pdf-alamat">: -</td></tr>
                     </table>
                 </div>
